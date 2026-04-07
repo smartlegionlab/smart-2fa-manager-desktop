@@ -1,6 +1,18 @@
-# Smart 2FA Manager (GUI) <sup>v1.0.0</sup>
+# Smart 2FA Manager (GUI) <sup>v1.0.1</sup>
 
-**Lightweight, offline, independent TOTP 2FA manager for Linux with graphical interface.**
+---
+
+**Offline, independent TOTP 2FA manager for Linux with graphical interface.**
+
+---
+
+[![GitHub top language](https://img.shields.io/github/languages/top/smartlegionlab/smart-2fa-manager-python-gui)](https://github.com/smartlegionlab/smart-2fa-manager-python-gui)
+[![GitHub license](https://img.shields.io/github/license/smartlegionlab/smart-2fa-manager-python-gui)](https://github.com/smartlegionlab/smart-2fa-manager-python-gui/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/smartlegionlab/smart-2fa-manager-python-gui)](https://github.com/smartlegionlab/smart-2fa-manager-python-gui/)
+[![GitHub stars](https://img.shields.io/github/stars/smartlegionlab/smart-2fa-manager-python-gui?style=social)](https://github.com/smartlegionlab/smart-2fa-manager-python-gui/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/smartlegionlab/smart-2fa-manager-python-gui?style=social)](https://github.com/smartlegionlab/smart-2fa-manager-python-gui/network/members)
+
+---
 
 No cloud, no phone required. Store your secrets locally, generate codes, create encrypted backups, and sync with Google Authenticator via QR codes.
 
@@ -13,6 +25,12 @@ No cloud, no phone required. Store your secrets locally, generate codes, create 
 **Summary:** Software provided "AS IS" without warranty. You assume all risks.
 
 **Full legal disclaimer:** See [DISCLAIMER.md](DISCLAIMER.md)
+
+---
+
+## Interface
+
+![Main Interface](https://github.com/smartlegionlab/smart-2fa-manager-python-gui/raw/master/data/images/logo.png)
 
 ---
 
@@ -33,36 +51,34 @@ sudo dnf install python3-pyqt5 oathtool gnupg2 qrencode
 
 ### Setup
 
-1. Get the script from repository:
+1. Clone repository:
    ```bash
-   cd ~
-   git clone https://github.com/smartlegionlab/smart-2fa-manager-gui.git
-   cd smart-2fa-manager-gui
+   git clone https://github.com/smartlegionlab/smart-2fa-manager-python-gui.git
+   cd smart-2fa-manager-python-gui
    ```
 
 2. Run:
    ```bash
-   python3 main.py
+   python main.py
    ```
 
-3. Create desktop shortcut (optional):
+3. Create desktop launcher (optional):
+   
+   Create file `~/Desktop/smart-2fa.sh`:
    ```bash
-   chmod +x main.py
-   sudo cp main.py /usr/local/bin/2fa-gui
-   # Now you can use: 2fa-gui
+   #!/bin/bash
+   cd ~/smart-2fa-manager-python-gui
+   python main.py
    ```
+   
+   Make it executable:
+   ```bash
+   chmod +x ~/Desktop/smart-2fa.sh
+   ```
+   
+   Now double-click the script on your desktop to run the application.
 
 ---
-
-## Quick Start
-
-```bash
-# Run the application
-python3 main.py
-
-# Or if installed
-2fa-gui
-```
 
 Then in the GUI:
 
@@ -83,8 +99,6 @@ Then in the GUI:
 | `🔄 Refresh Codes` | Manually refresh all codes |
 | `💾 Backup` | Create encrypted backup with timestamp |
 | `📂 Restore` | Restore from encrypted backup |
-| `Lock` (Ctrl+L) | Lock storage |
-| `Exit` (Ctrl+Q) | Exit application |
 
 ### Table Actions
 
@@ -94,6 +108,37 @@ Then in the GUI:
 | `🔑 Get` | Show TOTP code in dialog |
 | `📱 QR` | Show QR code for phone import |
 | `🗑 Delete` | Delete service |
+
+---
+
+## Keyboard Shortcuts
+
+### Global Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + L` | Lock storage |
+| `Ctrl + E` | Exit application |
+| `F1` | Show About dialog |
+| `Ctrl + /` | Show Keyboard Shortcuts |
+
+### Services Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + N` | Add new service |
+| `Ctrl + R` | Refresh all codes |
+| `Ctrl + B` | Create backup |
+| `Ctrl + Shift + R` | Restore from backup |
+
+### Table Actions (when row selected)
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + C` | Copy code to clipboard |
+| `Ctrl + G` | Show code in dialog |
+| `Ctrl + Q` | Show QR code dialog |
+| `Del` | Delete service |
 
 ---
 
@@ -124,18 +169,8 @@ Then in the GUI:
 
 - Your GPG password is never stored
 - Backup files are encrypted with the same password
-- Lock storage when leaving your computer (Ctrl+L)
+- Lock storage when leaving your computer (`Ctrl + L`)
 - Keep backups in a safe place (encrypted USB drive, offline storage)
-
----
-
-## Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+L` | Lock storage |
-| `Ctrl+Q` | Exit application |
-| `F1` | About dialog |
 
 ---
 
@@ -154,7 +189,7 @@ python main.py
 ## Author & Repository
 
 - **Author:** [@smartlegionlab](https://github.com/smartlegionlab/)
-- **Repository:** [smartlegionlab/smart-2fa-manager-gui](https://github.com/smartlegionlab/smart-2fa-manager-gui)
+- **Repository:** [smartlegionlab/smart-2fa-manager-python-gui](https://github.com/smartlegionlab/smart-2fa-manager-python-gui)
 - **Bash version:** [smart-2fa-manager-bash](https://github.com/smartlegionlab/smart-2fa-manager-bash)
 - **Python CLI:** [smart-2fa-manager-python-cli](https://github.com/smartlegionlab/smart-2fa-manager-python-cli)
 - **License:** [BSD 3-Clause](LICENSE)
@@ -173,4 +208,4 @@ python main.py
 
 ## License
 
-BSD 3-Clause License - Copyright (c) 2026, Alexander Suvorov
+BSD 3-Clause License - Copyright (c) 2026, [Alexander Suvorov](https://github.com/smartlegionlab)

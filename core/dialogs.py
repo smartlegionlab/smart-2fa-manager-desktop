@@ -1,9 +1,9 @@
-# ============================================================
+# ==============================================================
 # Smart 2FA Manager (Gui)
-# https://github.com/smartlegionlab/smart-2fa-manager-gui
+# https://github.com/smartlegionlab/smart-2fa-manager-python-gui
 # Copyright (©) 2026, Alexander Suvorov. All rights reserved.
 # License: BSD 3-Clause
-# ============================================================
+# ==============================================================
 from pathlib import Path
 from PyQt5.QtWidgets import (
     QDialog,
@@ -15,10 +15,12 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QMessageBox,
     QGroupBox,
-    QGridLayout, QApplication
+    QGridLayout,
+    QApplication
 )
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
+from core import __version__ as ver
 
 
 class InitDialog(QDialog):
@@ -438,7 +440,7 @@ class AboutDialog(QDialog):
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
 
-        version = QLabel("Version 1.0.0")
+        version = QLabel(f"Version {ver}")
         version.setAlignment(Qt.AlignCenter)
         layout.addWidget(version)
 
@@ -459,7 +461,7 @@ class AboutDialog(QDialog):
         author = QLabel(
             "Author: Alexander Suvorov\n"
             "License: BSD 3-Clause\n"
-            "Repository: https://github.com/smartlegionlab/smart-2fa-manager-gui"
+            "Repository: https://github.com/smartlegionlab/smart-2fa-manager-python-gui"
         )
         author.setAlignment(Qt.AlignCenter)
         author.setStyleSheet("color: #888;")

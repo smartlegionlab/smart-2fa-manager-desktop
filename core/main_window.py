@@ -1,9 +1,9 @@
-# ============================================================
+# ==============================================================
 # Smart 2FA Manager (Gui)
-# https://github.com/smartlegionlab/smart-2fa-manager-gui
+# https://github.com/smartlegionlab/smart-2fa-manager-python-gui
 # Copyright (©) 2026, Alexander Suvorov. All rights reserved.
 # License: BSD 3-Clause
-# ============================================================
+# ==============================================================
 import sys
 import time
 from pathlib import Path
@@ -37,6 +37,7 @@ from core.dialogs import (
     BackupRestoreDialog,
     AboutDialog
 )
+from core import __version__ as ver
 
 
 class MainWindow(QMainWindow):
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         self.secrets = {}
         self.is_unlocked = False
 
-        self.setWindowTitle(f"Smart 2FA Manager")
+        self.setWindowTitle(f"Smart 2FA Manager {ver}")
         self.resize(900, 500)
 
         self.setup_ui()
@@ -110,6 +111,8 @@ class MainWindow(QMainWindow):
         """)
         main_layout.addWidget(self.table)
 
+        self.setup_table_shortcuts()
+
         button_layout = QHBoxLayout()
         button_layout.setSpacing(10)
 
@@ -168,16 +171,193 @@ class MainWindow(QMainWindow):
         file_menu.addSeparator()
 
         exit_action = QAction("Exit", self)
-        exit_action.setShortcut("Ctrl+Q")
+        exit_action.setShortcut("Ctrl+E")
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
+        services_menu = menubar.addMenu("Services")
+
+        add_action = QAction("Add Service", self)
+        add_action.setShortcut("Ctrl+N")
+        add_action.triggered.connect(self.add_service)
+        services_menu.addAction(add_action)
+
+        refresh_action = QAction("Refresh Codes", self)
+        refresh_action.setShortcut("Ctrl+R")
+        refresh_action.triggered.connect(self.refresh_codes)
+        services_menu.addAction(refresh_action)
+
+        services_menu.addSeparator()
+
+        backup_action = QAction("Create Backup", self)
+        backup_action.setShortcut("Ctrl+B")
+        backup_action.triggered.connect(self.create_backup)
+        services_menu.addAction(backup_action)
+
+        restore_action = QAction("Restore from Backup", self)
+        restore_action.setShortcut("Ctrl+Shift+R")
+        restore_action.triggered.connect(self.restore_backup)
+        services_menu.addAction(restore_action)
+
         help_menu = menubar.addMenu("Help")
+
+        shortcuts_action = QAction("Keyboard Shortcuts", self)
+        shortcuts_action.setShortcut("Ctrl+/")
+        shortcuts_action.triggered.connect(self.show_shortcuts)
+        help_menu.addAction(shortcuts_action)
+
+        help_menu.addSeparator()
 
         about_action = QAction("About", self)
         about_action.setShortcut("F1")
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
+
+    def show_shortcuts(self):
+        from PyQt5.QtWidgets import QScrollArea, QVBoxLayout, QWidget, QFrame
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Smart 2FA Manager - Keyboard Shortcuts")
+        dialog.setMinimumWidth(550)
+        dialog.setMinimumHeight(500)
+
+        layout = QVBoxLayout(dialog)
+        layout.setSpacing(10)
+
+        header = QLabel("Keyboard Shortcuts")
+        header_font = QFont()
+        header_font.setPointSize(16)
+        header_font.setBold(True)
+        header.setFont(header_font)
+        header.setAlignment(Qt.AlignCenter)
+        header.setStyleSheet("color: #2a82da; padding: 10px;")
+        layout.addWidget(header)
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("""
+            QScrollArea {
+                border: none;
+                background-color: #2a2a2a;
+            }
+            QScrollBar:vertical {
+                background-color: #353535;
+                width: 12px;
+                border-radius: 6px;
+            }
+            QScrollBar::handle:vertical {
+                background-color: #2a82da;
+                border-radius: 6px;
+                min-height: 20px;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+        """)
+
+        content_widget = QWidget()
+        content_layout = QVBoxLayout(content_widget)
+        content_layout.setSpacing(20)
+        content_layout.setContentsMargins(15, 15, 15, 15)
+
+        def add_shortcut_table(title, shortcuts):
+            title_label = QLabel(title)
+            title_font = QFont()
+            title_font.setPointSize(12)
+            title_font.setBold(True)
+            title_label.setFont(title_font)
+            title_label.setStyleSheet("color: #2a82da; padding-top: 10px;")
+            content_layout.addWidget(title_label)
+
+            line = QFrame()
+            line.setFrameShape(QFrame.HLine)
+            line.setStyleSheet("background-color: #444; max-height: 1px;")
+            content_layout.addWidget(line)
+
+            for key, desc in shortcuts:
+                item_widget = QWidget()
+                item_layout = QHBoxLayout(item_widget)
+                item_layout.setContentsMargins(10, 5, 10, 5)
+                item_layout.setSpacing(20)
+
+                key_label = QLabel(key)
+                key_label.setFont(QFont("Monospace", 11))
+                key_label.setStyleSheet("""
+                    color: #2a82da;
+                    background-color: #353535;
+                    padding: 4px 10px;
+                    border-radius: 4px;
+                    min-width: 120px;
+                """)
+                key_label.setAlignment(Qt.AlignCenter)
+
+                desc_label = QLabel(desc)
+                desc_label.setStyleSheet("color: #cccccc;")
+
+                item_layout.addWidget(key_label)
+                item_layout.addWidget(desc_label)
+                item_layout.addStretch()
+
+                content_layout.addWidget(item_widget)
+
+        add_shortcut_table("🌐 Global Shortcuts", [
+            ("Ctrl + L", "Lock Storage"),
+            ("Ctrl + E", "Exit Application"),
+            ("F1", "About"),
+            ("Ctrl + /", "Show this help"),
+        ])
+
+        add_shortcut_table("🔧 Services Shortcuts", [
+            ("Ctrl + N", "Add New Service"),
+            ("Ctrl + R", "Refresh Codes"),
+            ("Ctrl + B", "Create Backup"),
+            ("Ctrl + Shift + R", "Restore from Backup"),
+        ])
+
+        add_shortcut_table("📋 Table Actions (when row selected)", [
+            ("Ctrl + C", "Copy Code"),
+            ("Ctrl + G", "Get Code Dialog"),
+            ("Ctrl + Q", "Show QR Code"),
+            ("Del", "Delete Service"),
+        ])
+
+        note_label = QLabel("💡 Tip: Select a service row in the table to use Table Actions shortcuts")
+        note_label.setStyleSheet("color: #ff9800; padding: 10px; margin-top: 10px;")
+        note_label.setWordWrap(True)
+        content_layout.addWidget(note_label)
+
+        content_layout.addStretch()
+
+        scroll.setWidget(content_widget)
+        layout.addWidget(scroll)
+
+        btn_close = QPushButton("Close")
+        btn_close.setMinimumHeight(35)
+        btn_close.setStyleSheet("""
+            QPushButton {
+                background-color: #2a82da;
+                color: white;
+                border-radius: 5px;
+                padding: 8px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #1a72ca;
+            }
+        """)
+        btn_close.clicked.connect(dialog.accept)
+        layout.addWidget(btn_close)
+
+        dialog.setStyleSheet("""
+            QDialog {
+                background-color: #2a2a2a;
+            }
+            QLabel {
+                color: #ffffff;
+            }
+        """)
+
+        dialog.exec_()
 
     def center_window(self):
         frame = self.frameGeometry()
@@ -283,6 +463,57 @@ class MainWindow(QMainWindow):
             actions_layout.addWidget(del_btn)
 
             self.table.setCellWidget(row, 2, actions_widget)
+
+    def setup_table_shortcuts(self):
+        copy_shortcut = QAction(self)
+        copy_shortcut.setShortcut("Ctrl+C")
+        copy_shortcut.triggered.connect(self.copy_selected_code)
+        self.addAction(copy_shortcut)
+
+        get_shortcut = QAction(self)
+        get_shortcut.setShortcut("Ctrl+G")
+        get_shortcut.triggered.connect(self.get_selected_code)
+        self.addAction(get_shortcut)
+
+        qr_shortcut = QAction(self)
+        qr_shortcut.setShortcut("Ctrl+Q")
+        qr_shortcut.triggered.connect(self.qr_selected_code)
+        self.addAction(qr_shortcut)
+
+        delete_shortcut = QAction(self)
+        delete_shortcut.setShortcut(Qt.Key_Delete)
+        delete_shortcut.triggered.connect(self.delete_selected_service)
+        self.addAction(delete_shortcut)
+
+    def get_selected_service(self):
+        current_row = self.table.currentRow()
+        if current_row >= 0:
+            service_item = self.table.item(current_row, 0)
+            if service_item:
+                return service_item.text()
+        return None
+
+    def copy_selected_code(self):
+        service = self.get_selected_service()
+        if service and service in self.secrets:
+            code = self.totp_manager.generate_totp(self.secrets[service])
+            if code:
+                self.copy_code(service, code)
+
+    def get_selected_code(self):
+        service = self.get_selected_service()
+        if service:
+            self.show_code_dialog(service)
+
+    def qr_selected_code(self):
+        service = self.get_selected_service()
+        if service and service in self.secrets:
+            self.show_qr_dialog(service, self.secrets[service])
+
+    def delete_selected_service(self):
+        service = self.get_selected_service()
+        if service:
+            self.delete_service(service)
 
     def show_qr_dialog(self, service: str, secret: str):
         if not self.is_unlocked:
