@@ -397,8 +397,13 @@ class MainWindow(QMainWindow):
                 self.timer.start(1000)
                 self.status_bar.showMessage(f"Loaded {len(self.secrets)} services", 3000)
             else:
+                self.timer.stop()
+                self.is_unlocked = False
+                self.secrets = {}
+                self.table.setRowCount(0)
+                self.countdown_label.setText("")
                 QMessageBox.critical(self, "Error", "Wrong password or corrupted storage!")
-                self.close()
+                self.show_unlock_dialog()
         else:
             sys.exit(0)
 
