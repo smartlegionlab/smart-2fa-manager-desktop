@@ -458,17 +458,45 @@ class AboutDialog(QDialog):
 
         layout.addSpacing(10)
 
-        author = QLabel(
-            "Author: Alexander Suvorov\n"
-            "License: BSD 3-Clause\n"
-            "Repository: https://github.com/smartlegionlab/smart-2fa-manager-python-gui"
+        author_label = QLabel(
+            'Author: <a href="https://github.com/smartlegionlab/" style="color: #2a82da; text-decoration: none;">Alexander Suvorov</a>'
         )
-        author.setAlignment(Qt.AlignCenter)
-        author.setStyleSheet("color: #888;")
-        layout.addWidget(author)
+        author_label.setOpenExternalLinks(True)
+        author_label.setTextFormat(Qt.RichText)
+        author_label.setAlignment(Qt.AlignCenter)
+        author_label.setStyleSheet("color: #888;")
+        layout.addWidget(author_label)
+
+        license_label = QLabel("License: BSD 3-Clause")
+        license_label.setAlignment(Qt.AlignCenter)
+        license_label.setStyleSheet("color: #888;")
+        layout.addWidget(license_label)
+
+        repo_label = QLabel(
+            'Repository: <a href="https://github.com/smartlegionlab/smart-2fa-manager-python-gui" style="color: #2a82da; text-decoration: none;">github.com/smartlegionlab/smart-2fa-manager-python-gui</a>'
+        )
+        repo_label.setOpenExternalLinks(True)
+        repo_label.setTextFormat(Qt.RichText)
+        repo_label.setAlignment(Qt.AlignCenter)
+        repo_label.setWordWrap(True)
+        repo_label.setStyleSheet("color: #888;")
+        layout.addWidget(repo_label)
 
         layout.addSpacing(10)
 
         btn_close = QPushButton("Close")
+        btn_close.setMinimumHeight(35)
+        btn_close.setStyleSheet("""
+            QPushButton {
+                background-color: #2a82da;
+                color: white;
+                border-radius: 5px;
+                padding: 8px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #1a72ca;
+            }
+        """)
         btn_close.clicked.connect(self.accept)
         layout.addWidget(btn_close)
