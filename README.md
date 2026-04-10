@@ -1,4 +1,4 @@
-# Smart 2FA Manager (Desktop) <sup>v1.1.1</sup>
+# Smart 2FA Manager (Desktop) <sup>v1.1.2</sup>
 
 ---
 
