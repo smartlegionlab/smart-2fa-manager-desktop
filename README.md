@@ -1,4 +1,4 @@
-# Smart 2FA Manager (Desktop) <sup>v1.1.0</sup>
+# Smart 2FA Manager (Desktop) <sup>v1.1.1</sup>
 
 ---
 
@@ -191,7 +191,7 @@ python main.py
 - **Author:** [@smartlegionlab](https://github.com/smartlegionlab/)
 - **Repository:** [smartlegionlab/smart-2fa-manager-desktop](https://github.com/smartlegionlab/smart-2fa-manager-desktop)
 - **Bash version:** [smart-2fa-manager-bash](https://github.com/smartlegionlab/smart-2fa-manager-bash)
-- **Python CLI:** [smart-2fa-manager-python-cli](https://github.com/smartlegionlab/smart-2fa-manager-python-cli)
+- **Python CLI:** [smart-2fa-manager-cli](https://github.com/smartlegionlab/smart-2fa-manager-cli)
 - **License:** [BSD 3-Clause](LICENSE)
 
 ---
