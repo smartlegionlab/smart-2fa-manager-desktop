@@ -1,7 +1,5 @@
-# Python dependencies (install with: pip install -r requirements.txt)
-PyQt5>=5.15.0
-
 # System dependencies (install with system package manager):
-# - gpg (GNU Privacy Guard)
-# - oathtool (OATH Toolkit)
-# - qrencode (optional, for QR codes)
+# - python-pyqt5 (PyQt5) - REQUIRED for GUI
+# - gpg (GNU Privacy Guard) - REQUIRED for encryption
+# - oathtool (OATH Toolkit) - REQUIRED for TOTP codes
+# - qrencode (optional) - OPTIONAL for QR codes

@@ -38,6 +38,12 @@ No cloud, no phone required. Store your secrets locally, generate codes, create 
 
 ### Dependencies
 
+System dependencies (install with system package manager):
+- python-pyqt5 (PyQt5) - REQUIRED for GUI
+- gpg (GNU Privacy Guard) - REQUIRED for encryption
+- oathtool (OATH Toolkit) - REQUIRED for TOTP codes
+- qrencode (optional) - OPTIONAL for QR codes
+
 ```bash
 # Arch Linux
 sudo pacman -S python-pyqt5 oath-toolkit gnupg qrencode
@@ -59,7 +65,7 @@ sudo dnf install python3-pyqt5 oathtool gnupg2 qrencode
 
 2. Run:
    ```bash
-   python main.py
+   python app.py
    ```
 
 3. Create desktop launcher (optional):
@@ -68,7 +74,7 @@ sudo dnf install python3-pyqt5 oathtool gnupg2 qrencode
    ```bash
    #!/bin/bash
    cd ~/smart-2fa-manager-desktop
-   python main.py
+   python app.py
    ```
    
    Make it executable:
@@ -213,7 +219,7 @@ Your existing `~/.2fa/secrets.gpg` file works **without additional settings** in
 
 ```bash
 # Just run GUI - it will detect existing storage
-python main.py
+python app.py
 # Enter your existing password
 ```
 

@@ -57,7 +57,7 @@ class TOTPManager:
             tmp_file.unlink(missing_ok=True)
             return False
 
-    def load_secrets(self) -> Optional[Dict[str, str]]:
+    def load_secrets(self):
         content = self._decrypt_store()
         if content is None:
             return None
